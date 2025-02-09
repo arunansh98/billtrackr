@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import SpendingChart from "../components/dashboard/SpendingChart";
 import ActiveSubscriptions from "../components/dashboard/ActiveSubscriptions";
@@ -7,6 +7,9 @@ import ExpenseChart from "../components/dashboard/ExpenseChart";
 import Sidebar from "../components/layout/SideBar";
 import AddSubscriptionForm from "../components/forms/AddSubscriptionForm"; // Import Form
 import Navbar from "../components/layout/NavBar";
+import UseGetLocalStorage from "../hooks/UseGetLocalStorage";
+
+const Context = createContext();
 
 const Dashboard = () => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
@@ -14,9 +17,7 @@ const Dashboard = () => {
   const [subscriptions, setSubscriptions] = useState([]);
 
   useEffect(() => {
-    const storedSubscriptions = JSON.parse(
-      localStorage.getItem("subscriptions")
-    );
+    const storedSubscriptions = UseGetLocalStorage("subscriptions");
     if (storedSubscriptions) {
       setSubscriptions(storedSubscriptions);
     }
@@ -41,28 +42,31 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <Sidebar isOpen={isSideBarOpen} />
-      <div className="flex-1 flex flex-col bg-gray-100">
-        <Navbar toggleSidebar={() => setIsSideBarOpen(!isSideBarOpen)} />
-        <div className="p-6">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <p className="text-gray-600">Welcome to BillTrackr!</p>
-          <AddSubscriptionForm onAdd={handleAdd} />{" "}
-          {/* Add Subscription Form */}
-          <DashboardCards />
-          <SpendingChart />
-          <ActiveSubscriptions
-            subscriptions={subscriptions}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
-          <UpcomingBills />
-          <ExpenseChart />
+    <Context.Provider
+      value={{
+        subscriptions,
+      }}
+    >
+      <div className="flex h-screen">
+        <Sidebar isOpen={isSideBarOpen} />
+        <div className="flex-1 flex flex-col bg-gray-100">
+          <Navbar toggleSidebar={() => setIsSideBarOpen(!isSideBarOpen)} />
+          <div className="p-6">
+            <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <p className="text-gray-600">Welcome to BillTrackr!</p>
+            <AddSubscriptionForm onAdd={handleAdd} />{" "}
+            {/* Add Subscription Form */}
+            <DashboardCards />
+            <SpendingChart />
+            <ActiveSubscriptions onDelete={handleDelete} onEdit={handleEdit} />
+            <UpcomingBills />
+            <ExpenseChart />
+          </div>
         </div>
       </div>
-    </div>
+    </Context.Provider>
   );
 };
 
 export default Dashboard;
+export { Context };

@@ -1,25 +1,73 @@
 import { CreditCard, Calendar, DollarSign, PiggyBank } from "lucide-react";
+import { useContext } from "react";
+import { Context } from "../../pages/DashBoard";
+import UseGetLocalStorage from "../../hooks/UseGetLocalStorage";
 
 const DashboardCards = () => {
+  const { subscriptions } = useContext(Context);
+
+  const { type, value } = UseGetLocalStorage("income");
+
+  const monthlyIncome = type === "yearly" ? value / 12 : value;
+
+  function isDateInCurrentMonth(dateString) {
+    const givenDate = new Date(dateString);
+    const currentDate = new Date();
+
+    return (
+      givenDate.getFullYear() === currentDate.getFullYear() &&
+      givenDate.getMonth() === currentDate.getMonth()
+    );
+  }
+
+  const getUpcomingBills = () => {
+    return subscriptions
+      ?.filter((subs) => {
+        let paymentDate = new Date(subs.nextPaymentDate);
+        const today = new Date();
+        return (
+          paymentDate >= today &&
+          paymentDate <= new Date(today.setDate(today.getDate() + 7))
+        );
+      })
+      ?.reduce((acc, curr) => acc + parseInt(curr?.price), 0);
+  };
+
+  const getTotalSpending = () => {
+    return subscriptions
+      ?.filter((subs) => {
+        const today = new Date();
+        return (
+          isDateInCurrentMonth(subs.nextPaymentDate) &&
+          new Date(subs.nextPaymentDate) < today
+        );
+      })
+      ?.reduce((acc, curr) => acc + parseInt(curr?.price), 0);
+  };
+
+  const getSavings = () => {
+    return monthlyIncome - (getTotalSpending() + getUpcomingBills());
+  };
+
   const cards = [
     {
       title: "Total Subscriptions",
-      value: "12",
+      value: subscriptions?.length,
       icon: <CreditCard className="w-8 h-8 text-blue-500" />,
     },
     {
       title: "Upcoming Bills",
-      value: "₹4,500",
+      value: "₹ " + getUpcomingBills(),
       icon: <Calendar className="w-8 h-8 text-yellow-500" />,
     },
     {
       title: "Total Spending",
-      value: "₹25,000",
+      value: "₹ " + getTotalSpending(),
       icon: <DollarSign className="w-8 h-8 text-red-500" />,
     },
     {
       title: "Savings",
-      value: "₹5,000",
+      value: "₹ " + getSavings(),
       icon: <PiggyBank className="w-8 h-8 text-green-500" />,
     },
   ];

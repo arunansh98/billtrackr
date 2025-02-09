@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { saveAs } from "file-saver";
 import EditSubscriptionForm from "../forms/EditSubscriptionForm";
 import Papa from "papaparse";
+import { Context } from "../../pages/DashBoard";
 
-const ActiveSubscriptions = ({ subscriptions, onDelete, onEdit }) => {
+const ActiveSubscriptions = ({ onDelete, onEdit }) => {
   const [editingSubscription, setEditingSubscription] = useState(null);
   const [filter, setFilter] = useState("all");
   const [sortOption, setSortOption] = useState("none");
@@ -11,6 +12,7 @@ const ActiveSubscriptions = ({ subscriptions, onDelete, onEdit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [alerts, setAlerts] = useState([]);
   const itemsPerPage = 5;
+  const { subscriptions } = useContext(Context);
 
   useEffect(() => {
     const today = new Date();
