@@ -39,7 +39,7 @@ const DashboardCards = () => {
         const today = new Date();
         return (
           isDateInCurrentMonth(subs.nextPaymentDate) &&
-          new Date(subs.nextPaymentDate) < today
+          new Date(subs.nextPaymentDate) <= today
         );
       })
       ?.reduce((acc, curr) => acc + parseInt(curr?.price), 0);
