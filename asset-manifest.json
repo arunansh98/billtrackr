@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/billtrackr/static/css/main.9a46218e.css",
-    "main.js": "/billtrackr/static/js/main.2dc3d1e2.js",
+    "main.js": "/billtrackr/static/js/main.a14322fb.js",
     "index.html": "/billtrackr/index.html",
     "main.9a46218e.css.map": "/billtrackr/static/css/main.9a46218e.css.map",
-    "main.2dc3d1e2.js.map": "/billtrackr/static/js/main.2dc3d1e2.js.map"
+    "main.a14322fb.js.map": "/billtrackr/static/js/main.a14322fb.js.map"
   },
   "entrypoints": [
     "static/css/main.9a46218e.css",
-    "static/js/main.2dc3d1e2.js"
+    "static/js/main.a14322fb.js"
   ]
 }
