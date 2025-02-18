@@ -41,6 +41,16 @@ const Dashboard = () => {
     );
   };
 
+  const handleIncome = () => {
+    const income = {
+      type: "monthly",
+      value: "10000",
+    };
+    localStorage.setItem("income", JSON.stringify(income));
+  };
+
+  handleIncome();
+
   return (
     <Context.Provider
       value={{

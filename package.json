@@ -1,10 +1,12 @@
 {
   "name": "billtrackr",
+  "homepage": "https://arunansh98.github.io/billtrackr",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "cra-template": "1.2.0",
     "file-saver": "^2.0.5",
+    "gh-pages": "^6.3.0",
     "lucide-react": "^0.474.0",
     "papaparse": "^5.5.2",
     "react": "^19.0.0",
@@ -14,6 +16,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

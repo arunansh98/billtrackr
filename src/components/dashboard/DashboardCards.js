@@ -6,7 +6,9 @@ import UseGetLocalStorage from "../../hooks/UseGetLocalStorage";
 const DashboardCards = () => {
   const { subscriptions } = useContext(Context);
 
-  const { type, value } = UseGetLocalStorage("income");
+  const storedIncome = UseGetLocalStorage("income");
+
+  const { type, value } = storedIncome ? storedIncome : { type: "", value: "" };
 
   const monthlyIncome = type === "yearly" ? value / 12 : value;
 
